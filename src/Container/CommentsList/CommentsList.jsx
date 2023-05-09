@@ -8,13 +8,16 @@ const Discussion = () => {
 
     const [posts, setPosts] = useState(null);
 
+    // console.log(posts);
+
     useEffect(() => {
         const GetPosts = async () => {
             try {
                 const { data } = await getAllPosts();
+                // console.log(data);
                 setPosts(data.slice(0, 6));
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         }
         GetPosts();
@@ -22,9 +25,14 @@ const Discussion = () => {
 
     const deleteHandler = async (e, postId) => {
         e.preventDefault();
-        e.stopPropagation(); 
-        const deletedPost = posts.filter(post => post.id !== postId);
-        setPosts(deletedPost);
+        e.stopPropagation();
+        try {
+            await deletePost(e, postId)
+            const newData = posts.filter(p => p.id !== postId);
+            setPosts(newData)
+        } catch (error) {
+            // console.log(error);
+        }
     }
 
     return (
