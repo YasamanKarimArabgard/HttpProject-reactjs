@@ -8,8 +8,6 @@ const Discussion = () => {
 
     const [posts, setPosts] = useState(null);
 
-    // console.log(posts);
-
     useEffect(() => {
         const GetPosts = async () => {
             try {
@@ -36,15 +34,18 @@ const Discussion = () => {
     }
 
     return (
-        <main className='col-12 mt-4 d-flex flex-wrap'>
-            {!posts ?
-                <p className='text-warning mt-2'>loading...</p> :
-                posts.map(post => (
-                    <Link to={`posts/${post.id}`} key={post.id} className='col-2 m-1 text-black' style={{ textDecoration: 'none' }}>
-                        <Post post={post} deleteHandler={deleteHandler} />
-                    </Link>
-                ))
-            }
+        <main className='col-12 mt-4 d-flex flex-column flex-wrap align-items-center'>
+            <h1 className='py-2'>Posts</h1>
+            <div className='col-12 d-flex flex-wrap justify-content-center'>
+                {!posts ?
+                    <h3 className='text-warning mt-2'>Loading...</h3> :
+                    posts.map(post => (
+                        <Link to={`posts/${post.id}`} key={post.id} className='col-11 col-sm-6 col-md-3 m-1 text-black d-flex justify-content-center' style={{ textDecoration: 'none' }}>
+                            <Post post={post} deleteHandler={deleteHandler} />
+                        </Link>
+                    ))
+                }
+            </div>
         </main>
     );
 };

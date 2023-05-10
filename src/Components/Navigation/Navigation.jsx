@@ -10,10 +10,10 @@ const Navigation = () => {
 
     return (
         <header>
-            <ul className='d-flex bg-light'>
+            <ul className='d-flex bg-primary'>
                 {items.map((item, index) => (
                     <li key={index} className='nav-item'>
-                        <NavLink to={item.to} className='nav-link text-secondary'>
+                        <NavLink to={item.to} className='nav-link text-white'>
                             {item.name}
                         </NavLink>
                     </li>
