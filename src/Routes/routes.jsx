@@ -3,9 +3,9 @@ import HomePage from '../Pages/HomePage';
 import NewPost from '../Components/NewPost/NewPost';
 
 const routes = [
-    { Path: '/', element: <HomePage /> },
-    { Path: '/newpost', element: <NewPost/> },
-    { Path: '/posts/:id', element: <SinglePost /> },
+    { id: 1, Path: '/', element: <HomePage /> },
+    { id: 2, Path: '/newpost', element: <NewPost /> },
+    { id: 3, Path: '/posts/:id', element: <SinglePost /> },
 ]
 
 export default routes;
