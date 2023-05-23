@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { postNewComments } from '../../services/postNewComments';
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import LoadingButton from '../../utils/Loading/LoadingButton'
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewPost = () => {
@@ -11,7 +11,7 @@ const NewPost = () => {
         content: ''
     });
 
-    const navigate = useNavigate();
+    const [btnLoading, setBtnLoading] = useState(null)
 
     const commentChangeHandler = (e) => {
         setComment({ ...comment, [e.target.name]: e.target.value })
@@ -34,15 +34,18 @@ const NewPost = () => {
 
     const addNewComment = async (e) => {
         e.preventDefault();
-
+        setBtnLoading(true);
         if (comment.title.trim().length || comment.content.trim().length !== 0) {
             try {
                 await postNewComments({ ...comment, postId: 7 });
+                setBtnLoading(false);
                 successMessage();
+                setComment({ title: '' , content : ''});
             } catch (error) {
                 console.log(error);
             }
         } else {
+            setBtnLoading(false);
             errorMessage();
         }
     }
@@ -50,27 +53,36 @@ const NewPost = () => {
     return (
         <div className="newpost col-12 d-flex justify-content-center align-items-center flex-column">
             <ToastContainer />
-            <h4>Add New Post</h4>
-            <div className="col-10 col-sm-6 col-md-4 border border-seconadry rounded p-2 mt-3">
-                <form className="col-12 m-1">
-                    <div className="col-12 m-1 d-flex flex-column">
-                        <label className="mx-1">Title : </label>
-                        <input className="form-control w-75"
+            <h4 className="text-info">Add New Post</h4>
+            <div className="col-10 col-sm-6 col-md-4 border border-info rounded p-2 mt-3 d-flex flex-column align-items-center">
+                <form className="col-12 my-1">
+                    <div className="col-12 my-1 d-flex flex-column">
+                        <label className="mx-1 h6">Title : </label>
+                        <input className="form-control w-100"
                             type="text"
                             onChange={(e) => commentChangeHandler(e)}
                             name='title'
-                            placeholder="title" />
+                            placeholder="Enter title"
+                            value={comment.title} />
                     </div>
-                    <div className="col-12 m-1 d-flex flex-column">
-                        <label className="mx-1">Content : </label>
-                        <input className="form-control w-75"
+                    <div className="col-12 my-1 d-flex flex-column">
+                        <label className="mx-1 h6">Content : </label>
+                        <textarea className="form-control w-100"
                             type="text"
                             onChange={(e) => commentChangeHandler(e)}
                             name='content'
-                            placeholder="content" />
+                            placeholder="Enter text"
+                            rows={3}
+                            value={comment.content}/>
                     </div>
                 </form>
-                <button className="btn btn-primary m-2 w-25" onClick={(e) => addNewComment(e)}>submit</button>
+                <button className={ btnLoading ? "btn btn-secondary m-2 w-25" : "btn btn-primary m-2 w-25"} onClick={(e) => addNewComment(e)}>
+                    {
+                        btnLoading ?
+                            <LoadingButton /> :
+                            'Submit'
+                    }
+                </button>
             </div>
         </div>
     );
